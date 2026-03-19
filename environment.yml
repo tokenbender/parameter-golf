@@ -1,0 +1,22 @@
+name: parameter-golf
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - git
+  - curl
+  - tmux
+  - rsync
+  - numpy
+  - tqdm
+  - sentencepiece
+  - huggingface_hub
+  - datasets
+  - tiktoken
+  - wandb
+  - setuptools
+  - typing_extensions=4.15.0
+  - pip:
+      - mlx; platform_system == "Darwin" and platform_machine == "arm64"
+      - torch==2.10; platform_system == "Linux"

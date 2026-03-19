@@ -46,16 +46,16 @@ If you have an Apple laptop or desktop with Apple Silicon, we've set up a simple
 
 If you don't have a Mac with Apple Silicon, you can run an adapted version of this script without MLX support. Just ask [Codex](https://openai.com/codex/) to refactor it; the change is straightforward. It may still be fairly slow, so we recommend jumping straight to cloud GPUs with Runpod.
 
-First, clone the repository, create a fresh Python environment, and install the packages needed for the MLX path plus dataset download:
+First, clone the repository and create the shared Conda environment. `environment.yml` is the single cross-platform definition for this repo: it installs `mlx` on Apple Silicon and `torch` on Linux via platform markers, while keeping the common dataset and tokenizer dependencies aligned.
 
 ```bash
 git clone https://github.com/openai/parameter-golf.git
 cd parameter-golf
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-pip install mlx numpy sentencepiece huggingface-hub datasets tqdm
+conda env create -f environment.yml
+conda activate parameter-golf
 ```
+
+If the environment already exists, refresh it in place with `conda env update -f environment.yml --prune`.
 
 Download our cached version of FineWeb with the 1024-token vocabulary:
 
@@ -93,12 +93,14 @@ You can rent GPUs from anywhere, but OpenAI is partnering with Runpod to make se
 
 3. Let's start with a 1xH100 pod. Deploy using the official Parameter Golf template: [Launch Template](https://console.runpod.io/deploy?template=y5cejece4j&ref=nl2r56th). Enable SSH terminal access, leaving the other settings at their defaults. Deploy your pod and SSH into it once it's up. You should land in `/workspace/`.
 
-On your remote machine, clone the repo onto local disk. All Python dependencies are already pre-installed in the image.
+On your remote machine, clone the repo onto local disk and create the same Conda environment there. If the image does not already have Conda, install Miniconda first.
 
 ```bash
 cd /workspace
 git clone https://github.com/openai/parameter-golf.git
 cd parameter-golf
+conda env create -f environment.yml
+conda activate parameter-golf
 ```
 
 Download our cached version of FineWeb. We'll use the 1024-token vocabulary for now.
